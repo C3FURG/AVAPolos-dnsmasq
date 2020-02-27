@@ -3,12 +3,13 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag avapolos/dnsmasq
+    - name: Docker Build & Push
+      uses: mr-smithers-excellent/docker-build-push@v2
+      with:
+        image: avapolos/dnsmasq
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
