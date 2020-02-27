@@ -6,12 +6,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Docker Build & Push
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        IMAGE_REPO: avapolos
-        IMAGE_NAME: dnsmasq
-      run: docker build -t $IMAGE_REPO/$IMAGE_NAME .
-           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-           docker push $IMAGE_REPO/$IMAGE_NAME
+    - uses: actions/checkout@v1.0
+
+    - uses: mr-smithers-excellent/docker-build-push@v2
+      with:
+        image: avapolos/dnsmasq
+        tag: latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
